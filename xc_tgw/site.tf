@@ -3,11 +3,11 @@ resource "volterra_aws_tgw_site" "tgw_site" {
   namespace = "system"
   vpc_attachments {
     vpc_list {
-      vpc_id = "vpc-0ce42e5fd7dff7c61"
+      vpc_id = "vpc-0d0338da9a114bff2"
     }
-    vpc_list {
-      vpc_id = "vpc-027445036839330dd"
-    }
+    # vpc_list {
+    #   vpc_id = "vpc-027445036839330dd"
+    # }
   }
 
   aws_parameters {
