@@ -9,15 +9,9 @@ resource "aws_instance" "bu1-web" {
   # Security Group
   # security_groups = aws_security_group.ssh_allowed.id
   # the Public SSH key
-  key_name  = "netta-aws-east2-xc-account"
-  user_data = <<-EOF
-    #!/bin/bash -ex
+  # key_name  = "netta-aws-east2-xc-account"
+  key_name  = "netta-aws-ca-cent-xc"
 
-    amazon-linux-extras install nginx1 -y
-    echo "<h1>$(curl https://api.kanye.rest/?format=text)</h1>" >  /usr/share/nginx/html/index.html 
-    systemctl enable nginx
-    systemctl start nginx
-    EOF
   tags = {
     Name  = "tgw-spoke-bu1-node-1"
     Owner = "s.iannetta@f5.com"
