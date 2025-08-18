@@ -88,6 +88,12 @@ variable "ami" {
   default = "ami-0ee4f2271a4df2d7d"
 }
 
+# variable "ami" {
+#   type    = string
+#   default = "ami-0ee4f2271a4df2d7d"
+#   #default = "ami-0b18956f"
+# }
+
 variable "az" {
   type    = string
   default = "us-east-2a"

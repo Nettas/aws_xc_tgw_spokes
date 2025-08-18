@@ -3,7 +3,7 @@ resource "volterra_aws_tgw_site" "tgw_site" {
   namespace = "system"
   vpc_attachments {
     vpc_list {
-      vpc_id = "vpc-0d0338da9a114bff2"
+      vpc_id = "vpc-0989259c645d3910c"
     }
     # vpc_list {
     #   vpc_id = "vpc-027445036839330dd"
@@ -12,10 +12,10 @@ resource "volterra_aws_tgw_site" "tgw_site" {
 
   aws_parameters {
     aws_certified_hw = "aws-byol-multi-nic-voltmesh"
-    aws_region       = "us-east-2"
+    aws_region       = "ca-central-1"
 
     az_nodes {
-      aws_az_name = "us-east-2a"
+      aws_az_name = "ca-central-1a"
 
       // One of the arguments from this list "reserved_inside_subnet inside_subnet" must be set
       reserved_inside_subnet = true
@@ -25,7 +25,7 @@ resource "volterra_aws_tgw_site" "tgw_site" {
         // One of the arguments from this list "subnet_param existing_subnet_id" must be set
 
         subnet_param {
-          ipv4 = "192.168.1.0/24"
+          ipv4 = "10.0.1.0/24"
           #   ipv6 = "1234:568:abcd:9100::/64"
         }
       }
@@ -34,13 +34,13 @@ resource "volterra_aws_tgw_site" "tgw_site" {
         // One of the arguments from this list "existing_subnet_id subnet_param" must be set
 
         subnet_param {
-          ipv4 = "192.168.0.0/24"
+          ipv4 = "10.0.0.0/24"
           #   ipv6 = "1234:568:abcd:9100::/64"
         }
       }
       inside_subnet {
         subnet_param {
-          ipv4 = "192.168.2.0/24"
+          ipv4 = "10.0.2.0/24"
         }
       }
     }
@@ -61,7 +61,7 @@ resource "volterra_aws_tgw_site" "tgw_site" {
     // One of the arguments from this list "new_vpc vpc_id" must be set
     new_vpc {
       name_tag     = "tgw-demo"
-      primary_ipv4 = "192.168.0.0/22"
+      primary_ipv4 = "10.0.0.0/22"
       autogenerate = true
     }
     # vpc_id = "vpc-12345678901234567"
@@ -97,9 +97,9 @@ resource "volterra_aws_tgw_site" "tgw_site" {
 }
 
 resource "volterra_tf_params_action" "aws_tgw_site-terraform-params-action" {
-  site_name = "netta-tgw-site-demo"
-  site_kind = "aws_tgw_site"
-  action = "apply"
-  depends_on = [ volterra_aws_tgw_site.tgw_site ]
+  site_name       = "netta-tgw-site-demo"
+  site_kind       = "aws_tgw_site"
+  action          = "apply"
+  depends_on      = [volterra_aws_tgw_site.tgw_site]
   wait_for_action = true
 }

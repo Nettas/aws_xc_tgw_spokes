@@ -18,7 +18,7 @@ resource "aws_subnet" "public-vpc-bu1" {
   vpc_id                  = aws_vpc.bu1.id
   cidr_block              = "10.100.0.0/24"
   map_public_ip_on_launch = true
-  availability_zone       = "ca-central-1a"
+  availability_zone       = "us-east-2a"
   # tags {
   #     Name = "bu1-pub-subnet"
   # }
@@ -28,7 +28,7 @@ resource "aws_subnet" "private-vpc-bu1" {
   vpc_id                  = aws_vpc.bu1.id
   cidr_block              = "10.100.1.0/24"
   map_public_ip_on_launch = false
-  availability_zone       = "ca-central-1a"
+  availability_zone       = "us-east-2a"
   # tags {
   #     Name = "bu1-pub-subnet"
   # }
