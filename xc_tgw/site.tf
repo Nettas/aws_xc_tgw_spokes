@@ -3,11 +3,11 @@ resource "volterra_aws_tgw_site" "tgw_site" {
   namespace = "system"
   vpc_attachments {
     vpc_list {
-      vpc_id = "vpc-0989259c645d3910c"
+      vpc_id = "vpc-0e11adb79158765fc"
     }
-    # vpc_list {
-    #   vpc_id = "vpc-027445036839330dd"
-    # }
+    vpc_list {
+      vpc_id = "vpc-0d1d93faa1e38f6ee"
+   }
   }
 
   aws_parameters {
@@ -25,7 +25,7 @@ resource "volterra_aws_tgw_site" "tgw_site" {
         // One of the arguments from this list "subnet_param existing_subnet_id" must be set
 
         subnet_param {
-          ipv4 = "10.0.1.0/24"
+          ipv4 = "10.200.1.0/24"
           #   ipv6 = "1234:568:abcd:9100::/64"
         }
       }
@@ -34,13 +34,13 @@ resource "volterra_aws_tgw_site" "tgw_site" {
         // One of the arguments from this list "existing_subnet_id subnet_param" must be set
 
         subnet_param {
-          ipv4 = "10.0.0.0/24"
+          ipv4 = "10.200.0.0/24"
           #   ipv6 = "1234:568:abcd:9100::/64"
         }
       }
       inside_subnet {
         subnet_param {
-          ipv4 = "10.0.2.0/24"
+          ipv4 = "10.200.2.0/24"
         }
       }
     }
@@ -61,7 +61,7 @@ resource "volterra_aws_tgw_site" "tgw_site" {
     // One of the arguments from this list "new_vpc vpc_id" must be set
     new_vpc {
       name_tag     = "tgw-demo"
-      primary_ipv4 = "10.0.0.0/22"
+      primary_ipv4 = "10.200.0.0/22"
       autogenerate = true
     }
     # vpc_id = "vpc-12345678901234567"
