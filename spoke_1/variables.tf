@@ -88,3 +88,15 @@ variable "ami" {
   default = "ami-0ee4f2271a4df2d7d"
   #default = "ami-0b18956f"
 }
+
+variable "az" {
+  type    = string
+  default = "us-east-2a"
+}
+
+variable "key_name" {
+  type = string
+  #default = "netta-aws-east2-xc-account"
+  #ca-central
+  default = "netta-aws-ca-cent-7-2025"
+}

@@ -10,7 +10,7 @@ resource "aws_instance" "bu1-web" {
   # security_groups = aws_security_group.ssh_allowed.id
   # the Public SSH key
   # key_name  = "netta-aws-east2-xc-account"
-  key_name  = "netta-aws-east2-xc-account"
+  key_name  = var.key_name
 
   tags = {
     Name  = "tgw-spoke-bu1-node-1"
