@@ -80,12 +80,15 @@ variable "aws_token" {
 
 variable "awsRegion" {
   type    = string
-  default = "us-east-2"
+#  default = "us-east-2"
+  default = "ca-central-1"
 }
 
 variable "ami" {
   type    = string
-  default = "ami-0ee4f2271a4df2d7d"
+  # default = "ami-0ee4f2271a4df2d7d"
+  # ca-central
+  default = "ami-082699d130dfb7a48" 
 }
 
 # variable "ami" {
@@ -96,10 +99,13 @@ variable "ami" {
 
 variable "az" {
   type    = string
-  default = "us-east-2a"
+#  default = "us-east-2a"
+  default = "ca-central-1a"
 }
 
 variable "key_name" {
   type = string
-  default = "netta-aws-east2-xc-account"
+  #default = "netta-aws-east2-xc-account"
+  #ca-central
+  default = "netta-aws-ca-cent-7-2025"
 }
