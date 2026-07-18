@@ -1,0 +1,27 @@
+# Copy to terraform.tfvars and fill in — do not commit terraform.tfvars
+
+f5xc_api_url      = "https://YOUR-TENANT.console.ves.volterra.io/api"
+f5xc_api_p12_file = "/path/to/your/api-credential.p12"
+f5xc_tenant       = "YOUR-TENANT"
+
+aws_region = "us-west-1"
+aws_az     = "us-west-1a"
+
+aws_instance_type = "m5.2xlarge"
+aws_disk_size_gb  = 80
+
+vpc_name            = "f5xc-ce-vpc"
+outside_subnet_cidr = "10.110.1.0/24"
+inside_subnet_cidr  = "10.110.2.0/24"
+
+site_name            = "aws-ce-site1"
+aws_credentials_name = "aws-cloud-cred"
+
+ssh_key_name    = "your-aws-keypair-name"
+management_cidr = "0.0.0.0/0" # CHANGE THIS
+
+assign_eip_to_slo = true
+
+# AWS creds for the F5XC cloud-credentials object — pass via env vars, not here:
+#   export TF_VAR_aws_access_key_id="AKIA..."
+#   export TF_VAR_aws_secret_access_key_b64=$(echo -n "your-secret-key" | base64 -w0)
