@@ -10,7 +10,7 @@ data "aws_ami" "ce" {
 
   filter {
     name   = "name"
-    values = ["volterra-ce-*"]
+    values = ["f5xc-ce-*"]
   }
 
   filter {
