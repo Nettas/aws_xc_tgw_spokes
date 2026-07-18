@@ -1,7 +1,19 @@
 variable "aws_region" {
-  description = "REQUIRED: AWS Region to deploy the Customer Edge into"
+  description = "AWS Region for spoke 2 resources"
   type        = string
-  default = "us-east-2"
+  default     = "ca-central-1"
+}
+
+variable "tgw_id" {
+  description = "Transit Gateway ID (from aws_tgw/ output) — used for routing to hub"
+  type        = string
+  default     = ""
+}
+
+variable "hub_vpc_cidr" {
+  description = "Hub VPC CIDR — traffic to this CIDR is routed via TGW"
+  type        = string
+  default     = "10.200.0.0/24"
 }
 
 variable "aws_access_key" {
