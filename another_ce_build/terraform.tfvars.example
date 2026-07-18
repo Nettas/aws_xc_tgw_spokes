@@ -1,0 +1,29 @@
+# AWS Infrastructure Configuration
+vpc_name = "your-vpc-name"
+owner = "your-name"
+
+# F5XC CE Site Configuration
+f5xc-ce-site-name = "your-f5xc-site-name"
+
+# AWS Settings
+aws-ssh-key = "your-aws-ssh-key-name"
+aws-region = "us-west-2"
+aws-f5xc-ami = "ami-032a3669fe1532f76"  # Update with latest F5XC CE AMI for your region
+aws-ec2-flavor = "m5.2xlarge"  # or m5.4xlarge
+
+# Network Configuration - Private IPs for interfaces
+slo-private-ip = "10.0.1.10"   # Private IP for SLO interface (public subnet)
+sli-private-ip = "10.0.2.10"   # Private IP for SLI interface (private subnet)
+
+# F5XC API Configuration
+f5xc_api_url = "https://your-tenant.console.ves.volterra.io/api"
+f5xc_api_p12_file = "/path/to/your/api-key.p12"
+f5xc_sms_description = "F5XC SMSv2 AWS site created with Terraform"
+
+# Software Version Settings
+f5xc_default_sw_version = true    # Set to false to specify custom version
+# f5xc_software_version = "1.2.3"  # Only uncomment if f5xc_default_sw_version is false
+
+# Subnet Names (customize based on your VPC setup)
+public_subnet_name = "your-public-subnet-name"    # Public subnet for SLO interface
+private_subnet_name = "your-private-subnet-name"  # Private subnet for SLI interface

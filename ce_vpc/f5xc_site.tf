@@ -49,49 +49,50 @@ resource "volterra_securemesh_site_v2" "site" {
   aws {
     not_managed {
       node_list {
-        aws_az_name = var.aws_az
-        hostname    = "${var.site_name}-node0"
+        hostname = var.site_name
+        type     = "Control"
 
+        # -- Interface 0 - SLO (Site Local Outside) - eth0 --
         interface_list {
-          # -- Interface 0 - SLO (Site Local Outside) - eth0 --
-          interfaces {
-            description = "SLO - Site Local Outside"
+          name             = "eth0"
+          description      = "SLO - Site Local Outside"
+          dhcp_client      = true
+          is_primary       = true
+          monitor_disabled = false
+          mtu              = 1500
 
-            ethernet_interface {
-              device = "eth0"
-              mtu    = 1500
-
-              dhcp_client {}
-              site_local_outside_network {}
-
-              is_primary       = true
-              monitor_disabled = false
-            }
+          ethernet_interface {
+            device = "eth0"
           }
 
-          # -- Interface 1 - SLI (Site Local Inside) - eth1 --
-          interfaces {
-            description = "SLI - Site Local Inside"
+          network_option {
+            site_local_network = true
+          }
+        }
 
-            ethernet_interface {
-              device = "eth1"
-              mtu    = 1500
+        # -- Interface 1 - SLI (Site Local Inside) - eth1 --
+        interface_list {
+          name             = "eth1"
+          description      = "SLI - Site Local Inside"
+          dhcp_client      = true
+          is_primary       = false
+          monitor_disabled = false
+          mtu              = 1500
 
-              dhcp_client {}
-              site_local_inside_network {}
+          ethernet_interface {
+            device = "eth1"
+          }
 
-              is_primary       = false
-              monitor_disabled = false
-            }
+          network_option {
+            site_local_inside_network = true
           }
         }
       }
     }
   }
 
-  multiple_interface {}
-
-  private_connectivity_disabled = true
+  no_forward_proxy   = true
+  no_network_policy  = true
 
   depends_on = [volterra_cloud_credentials.aws]
 }
