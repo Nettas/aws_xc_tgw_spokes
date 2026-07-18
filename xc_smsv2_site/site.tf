@@ -23,7 +23,7 @@ resource "volterra_securemesh_site_v2" "ce" {
     not_managed {
       node_list {
         hostname = var.xc_site_name
-        type     = "node"
+        type     = "Control"
 
         # SLO interface — outside, internet-facing (eth0 / device_index 0)
         interface_list {
