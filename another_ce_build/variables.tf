@@ -77,7 +77,7 @@ variable "f5xc_software_version" {
   default     = null
 }
 
-variable "f5xc_default_sw_version" {
+variable "f5xc_default_sw_version" {    
   type        = bool
   description = "Use default software version (true) or specify custom version (false). If true, volterra_software_version must not be specified"
   default     = true
@@ -98,14 +98,4 @@ variable "private_subnet_name" {
   type        = string
   description = "Name of the private subnet for SLI interface"
   default     = "pveys-smsv2-private-3a"
-}
-
-variable "aws_access_key" {
-  type      = string
-  sensitive = true
-}
-
-variable "aws_secret_key" {
-  type      = string
-  sensitive = true
 }
