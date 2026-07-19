@@ -13,7 +13,7 @@ variable "tgw_id" {
 variable "hub_vpc_cidr" {
   description = "Hub VPC CIDR — traffic to this CIDR is routed via TGW"
   type        = string
-  default     = "10.200.0.0/24"
+  default     = "10.110.0.0/16"
 }
 
 variable "aws_access_key" {
