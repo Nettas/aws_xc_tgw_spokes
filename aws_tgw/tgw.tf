@@ -22,8 +22,8 @@ resource "aws_ec2_transit_gateway" "main" {
 # Hub VPC attachment — uses the dedicated TGW subnet
 resource "aws_ec2_transit_gateway_vpc_attachment" "hub" {
   transit_gateway_id = aws_ec2_transit_gateway.main.id
-  vpc_id             = aws_vpc.hub.id
-  subnet_ids         = [aws_subnet.hub_tgw.id]
+  vpc_id             = var.hub_vpc_id
+  subnet_ids         = [var.hub_tgw_subnet_id]
 
   transit_gateway_default_route_table_association = false
   transit_gateway_default_route_table_propagation = false

@@ -99,3 +99,13 @@ variable "private_subnet_name" {
   description = "Name of the private subnet for SLI interface"
   default     = "pveys-smsv2-private-3a"
 }
+
+variable "aws_access_key" {
+  type      = string
+  sensitive = true
+}
+
+variable "aws_secret_key" {
+  type      = string
+  sensitive = true
+}

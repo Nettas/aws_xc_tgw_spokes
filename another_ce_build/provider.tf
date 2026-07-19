@@ -16,10 +16,9 @@ terraform {
 }
 
 provider "aws" {
-  region                   = var.aws-region
-  shared_config_files      = "<your aws config location>"
-  shared_credentials_files = "<your aws config location>"
-  profile                  = "default"
+  region     = var.aws-region
+  access_key = var.aws_access_key
+  secret_key = var.aws_secret_key
 }
 
 provider "volterra" {

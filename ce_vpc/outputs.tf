@@ -1,3 +1,7 @@
+###############################################################################
+# Outputs — consumed by aws_tgw/ and for diagnostics
+###############################################################################
+
 output "vpc_id" {
   value = aws_vpc.vpc.id
 }
@@ -22,11 +26,22 @@ output "sli_private_ip" {
   value = aws_network_interface.sli.private_ip
 }
 
+output "sli_eni_id" {
+  description = "SLI ENI ID — used as route target in TGW subnet route table"
+  value       = aws_network_interface.sli.id
+}
+
+output "sli_subnet_id" {
+  description = "SLI subnet ID — for reference"
+  value       = aws_subnet.inside.id
+}
+
+output "tgw_subnet_id" {
+  description = "TGW attachment subnet ID — used by aws_tgw for hub attachment"
+  value       = aws_subnet.tgw.id
+}
+
 output "registration_token" {
   value     = volterra_token.site_token.id
   sensitive = true
-}
-
-output "f5xc_console_sites_url" {
-  value = "https://${var.f5xc_tenant}.console.ves.volterra.io/web/workspaces/multi-cloud-network-connect/overview/sites"
 }

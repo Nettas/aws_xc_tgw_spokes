@@ -7,13 +7,13 @@ resource "aws_vpc" "vpc" {
   enable_dns_support   = true
   enable_dns_hostnames = true
 
-  tags = merge(var.site_labels, { Name = var.vpc_name })
+  tags = { Name = var.vpc_name, Owner = var.owner }
 }
 
 resource "aws_internet_gateway" "igw" {
   vpc_id = aws_vpc.vpc.id
 
-  tags = merge(var.site_labels, { Name = "${var.vpc_name}-igw" })
+  tags = { Name = "${var.vpc_name}-igw", Owner = var.owner }
 }
 
 # -- SLO (outside) subnet --
@@ -23,7 +23,7 @@ resource "aws_subnet" "outside" {
   availability_zone       = var.aws_az
   map_public_ip_on_launch = false # EIP is attached explicitly to the ENI instead
 
-  tags = merge(var.site_labels, { Name = "${var.site_name}-slo" })
+  tags = { Name = "${var.site_name}-slo", Owner = var.owner }
 }
 
 # -- SLI (inside) subnet --
@@ -32,7 +32,16 @@ resource "aws_subnet" "inside" {
   cidr_block        = var.inside_subnet_cidr
   availability_zone = var.aws_az
 
-  tags = merge(var.site_labels, { Name = "${var.site_name}-sli" })
+  tags = { Name = "${var.site_name}-sli", Owner = var.owner }
+}
+
+# -- TGW attachment subnet --
+resource "aws_subnet" "tgw" {
+  vpc_id            = aws_vpc.vpc.id
+  cidr_block        = var.tgw_subnet_cidr
+  availability_zone = var.aws_az
+
+  tags = { Name = "${var.site_name}-tgw", Owner = var.owner }
 }
 
 # -- Route table: SLO subnet gets a default route to the IGW --
@@ -44,7 +53,7 @@ resource "aws_route_table" "slo_rt" {
     gateway_id = aws_internet_gateway.igw.id
   }
 
-  tags = merge(var.site_labels, { Name = "${var.vpc_name}-slo-rt" })
+  tags = { Name = "${var.vpc_name}-slo-rt", Owner = var.owner }
 }
 
 resource "aws_route_table_association" "slo_assoc" {

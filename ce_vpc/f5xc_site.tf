@@ -1,111 +1,68 @@
-# ==============================================================================
-# F5 Distributed Cloud - AWS Cloud Credentials
+###############################################################################
+# F5 XC Secure Mesh Site v2 — "not managed" (CE deployed via Terraform)
 #
-# ⚠️ Verify this block against your installed provider before apply:
-#   terraform providers schema -json | jq \
-#     '.provider_schemas."registry.terraform.io/volterraedge/volterra".resource_schemas.volterra_cloud_credentials'
-# ==============================================================================
-resource "volterra_cloud_credentials" "aws" {
-  name        = var.aws_credentials_name
-  namespace   = "system"
-  description = "AWS credentials for F5XC CE deployment"
+# Proven pattern: empty not_managed {} — let the CE self-identify at
+# registration time. Do NOT define node_list, hostname, type, or interfaces.
+###############################################################################
 
-  aws_secret_key {
-    access_key = var.aws_access_key_id
-
-    secret_key {
-      clear_secret_info {
-        url = "string:///${var.aws_secret_access_key_b64}"
-      }
-    }
-  }
-}
-
-# ==============================================================================
-# Single-Node CE Site | 2-NIC (SLO + SLI)
-#
-# ⚠️ Verify `aws_az_name` against your installed schema:
-#   terraform providers schema -json | jq \
-#     '.provider_schemas."registry.terraform.io/volterraedge/volterra".resource_schemas.volterra_securemesh_site_v2'
-# ==============================================================================
 resource "volterra_securemesh_site_v2" "site" {
-  name        = var.site_name
-  namespace   = var.f5xc_namespace
-  description = "F5XC CE Site - AWS ${var.aws_az} - 2-NIC"
-
+  name                    = var.site_name
+  namespace               = "system"
+  description             = "F5XC SMSv2 CE - ${var.aws_region} - hub site"
+  block_all_services      = true
   logs_streaming_disabled = true
-  block_all_services      = false
   enable_ha               = false
 
-  labels = merge(var.site_labels, {
+  labels = {
     "ves.io/provider" = "ves-io-AWS"
-    "site-az"         = var.aws_az
-  })
+  }
 
   re_select {
     geo_proximity = true
   }
 
   aws {
-    not_managed {
-      node_list {
-        hostname = var.site_name
-        type     = "Control"
-
-        # -- Interface 0 - SLO (Site Local Outside) - eth0 --
-        interface_list {
-          name             = "eth0"
-          description      = "SLO - Site Local Outside"
-          dhcp_client      = true
-          is_primary       = true
-          monitor_disabled = false
-          mtu              = 1500
-
-          ethernet_interface {
-            device = "eth0"
-          }
-
-          network_option {
-            site_local_network = true
-          }
-        }
-
-        # -- Interface 1 - SLI (Site Local Inside) - eth1 --
-        interface_list {
-          name             = "eth1"
-          description      = "SLI - Site Local Inside"
-          dhcp_client      = true
-          is_primary       = false
-          monitor_disabled = false
-          mtu              = 1500
-
-          ethernet_interface {
-            device = "eth1"
-          }
-
-          network_option {
-            site_local_inside_network = true
-          }
-        }
-      }
-    }
+    not_managed {}
   }
 
-  no_forward_proxy   = true
-  no_network_policy  = true
-
-  depends_on = [volterra_cloud_credentials.aws]
+  software_settings {
+    os {
+      default_os_version = true
+    }
+    sw {
+      default_sw_version = true
+    }
+  }
 }
 
-# ==============================================================================
-# Registration Token (type = 1) — injected via cloud-init into /etc/vpm/user_data
-# ==============================================================================
+#--- Registration token --------------------------------------------------------
+
 resource "volterra_token" "site_token" {
-  name      = "${var.site_name}-token"
-  namespace = var.f5xc_namespace
-  type      = 1
-
-  site_name = volterra_securemesh_site_v2.site.name
-
   depends_on = [volterra_securemesh_site_v2.site]
+  name       = "${var.site_name}-token"
+  namespace  = "system"
+  type       = 1
+  site_name  = volterra_securemesh_site_v2.site.name
+}
+
+#--- Cloud-init user data ------------------------------------------------------
+
+data "cloudinit_config" "ce_config" {
+  gzip          = false
+  base64_encode = false
+
+  part {
+    content_type = "text/cloud-config"
+    content = yamlencode({
+      #cloud-config
+      write_files = [
+        {
+          path        = "/etc/vpm/user_data"
+          permissions = "0644"
+          owner       = "root"
+          content     = "token: ${volterra_token.site_token.id}"
+        }
+      ]
+    })
+  }
 }
